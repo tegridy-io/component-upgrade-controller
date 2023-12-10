@@ -1,0 +1,9 @@
+# Overwrite parameters here
+
+parameters:
+  facts:
+    distribution: rke2
+
+  upgrade_controller:
+    release:
+      version: 'v1.28.4+rke2r1'

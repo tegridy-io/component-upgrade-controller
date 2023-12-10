@@ -1,3 +1,5 @@
 # Overwrite parameters here
 
-# parameters: {...}
+parameters:
+  facts:
+    distribution: k3s
