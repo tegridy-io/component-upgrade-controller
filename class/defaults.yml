@@ -27,6 +27,8 @@ parameters:
         cpu: 500m
         memory: 512Mi
 
+    groups: {}
+
     release:
       image: '${upgrade_controller:_dist_images:${facts:distribution}}'
       version: ''

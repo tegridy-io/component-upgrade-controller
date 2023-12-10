@@ -1,0 +1,24 @@
+# Overwrite parameters here
+
+parameters:
+  facts:
+    distribution: k3s
+
+  upgrade_controller:
+    groups:
+      etcd:
+        labels:
+          node-role.kubernetes.io/etcd: "true"
+        tolerations:
+          - key: node-role.kubernetes.io/control-plane
+            operator: Exists
+            effect: NoSchedule
+          - key: node-role.kubernetes.io/etcd
+            operator: Exists
+            effect: NoExecute
+      worker:
+        labels:
+          node-role.kubernetes.io/worker: "true"
+
+    release:
+      version: 'v1.28.4+k3s2'

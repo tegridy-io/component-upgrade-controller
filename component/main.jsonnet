@@ -144,48 +144,44 @@ local plan(name) = kube._Object('upgrade.cattle.io/v1', 'Plan', name) {
     namespace: params.namespace,
   },
   spec: {
-    version: params.release.version,
     concurrency: 1,
     cordon: true,
-    upgrade: {
-      image: params.release.image,
-    },
-    nodeSelector: {
-      matchExpressions: [ {
-        key: 'release-upgrade',
-        operator: 'NotIn',
-        values: [ 'disabled', 'false' ],
-      } ],
-    },
-    tolerations: [
-      {
-        key: 'CriticalAddonsOnly',
-        operator: 'Exists',
-      },
-      {
-        key: 'node-role.kubernetes.io/master',
-        operator: 'Exists',
-        effect: 'NoSchedule',
-      },
-      {
-        key: 'node-role.kubernetes.io/controlplane',
-        operator: 'Exists',
-        effect: 'NoSchedule',
-      },
-      {
-        key: 'node-role.kubernetes.io/control-plane',
-        operator: 'Exists',
-        effect: 'NoSchedule',
-      },
-      {
-        key: 'node-role.kubernetes.io/etcd',
-        operator: 'Exists',
-        effect: 'NoExecute',
-      },
-    ],
     serviceAccountName: appName,
   },
 };
+
+local groups = if std.length(params.groups) > 0 then params.groups else { default: {} };
+
+local plansRelease = [
+  local name = if group == 'default' then 'release-upgrade' else 'release-upgrade-%s' % group;
+  local tolerations = std.get(groups[group], 'tolerations', {});
+  local labels = std.get(groups[group], 'labels', {});
+  plan(name) {
+    spec+: {
+      version: params.release.version,
+      upgrade: {
+        image: params.release.image,
+      },
+      nodeSelector: {
+        matchExpressions: [
+          {
+            key: 'release-upgrade',
+            operator: 'NotIn',
+            values: [ 'disabled', 'false' ],
+          },
+        ] + [
+          {
+            key: label,
+            operator: 'Exists',
+          }
+          for label in std.objectFields(labels)
+        ],
+      },
+      [if std.length(tolerations) > 0 then 'tolerations']: tolerations,
+    },
+  }
+  for group in std.objectFields(groups)
+];
 
 
 // Define outputs below
@@ -194,5 +190,5 @@ local plan(name) = kube._Object('upgrade.cattle.io/v1', 'Plan', name) {
   '10_deployment': deployment,
   '10_configmap': configmap,
   '10_rbac': [ serviceAccount, clusterRoleBinding ],
-  [if params.release.version != '' then '20_plans_release']: plan('release-upgrade'),
+  [if params.release.version != '' then '20_plans_release']: plansRelease,
 }
