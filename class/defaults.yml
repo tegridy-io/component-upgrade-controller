@@ -1,6 +1,9 @@
 parameters:
   upgrade_controller:
     =_metadata: {}
+    =_dist_images:
+      k3s: docker.io/rancher/k3s-upgrade
+      rke2: docker.io/rancher/rke2-upgrade
 
     namespace: syn-upgrade-controller
 
@@ -13,9 +16,6 @@ parameters:
         registry: docker.io
         repository: rancher/kubectl
         tag: v1.28.4
-      k3s_upgrade:
-        registry: docker.io
-        repository: rancher/k3s-upgrade
 
     replicaCount: 1
 
@@ -27,4 +27,6 @@ parameters:
         cpu: 500m
         memory: 512Mi
 
-    release: ''
+    release:
+      image: '${upgrade_controller:_dist_images:${facts:distribution}}'
+      version: ''

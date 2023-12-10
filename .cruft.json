@@ -7,7 +7,7 @@
       "name": "System Upgrade Controller",
       "slug": "upgrade-controller",
       "parameter_key": "upgrade_controller",
-      "test_cases": "defaults",
+      "test_cases": "defaults release-upgrade",
       "add_lib": "n",
       "add_pp": "n",
       "add_golden": "y",

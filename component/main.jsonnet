@@ -144,15 +144,15 @@ local plan(name) = kube._Object('upgrade.cattle.io/v1', 'Plan', name) {
     namespace: params.namespace,
   },
   spec: {
-    version: params.release,
+    version: params.release.version,
     concurrency: 1,
     cordon: true,
     upgrade: {
-      image: '%(registry)s/%(repository)s' % params.images.k3s_upgrade,
+      image: params.release.image,
     },
     nodeSelector: {
       matchExpressions: [ {
-        key: 'k3s-upgrade',
+        key: 'release-upgrade',
         operator: 'NotIn',
         values: [ 'disabled', 'false' ],
       } ],
@@ -194,5 +194,5 @@ local plan(name) = kube._Object('upgrade.cattle.io/v1', 'Plan', name) {
   '10_deployment': deployment,
   '10_configmap': configmap,
   '10_rbac': [ serviceAccount, clusterRoleBinding ],
-  [if params.release != '' then '20_plan']: plan('system-upgrade'),
+  [if params.release.version != '' then '20_plans_release']: plan('release-upgrade'),
 }
