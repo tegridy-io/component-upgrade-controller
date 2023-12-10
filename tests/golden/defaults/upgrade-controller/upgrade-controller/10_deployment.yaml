@@ -1,0 +1,116 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations: {}
+  labels:
+    name: upgrade-conttroller
+  name: upgrade-conttroller
+spec:
+  minReadySeconds: 30
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      name: upgrade-conttroller
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations: {}
+      labels:
+        name: upgrade-conttroller
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: node-role.kubernetes.io/control-plane
+                    operator: Exists
+      containers:
+        - args: []
+          env:
+            - name: SYSTEM_UPGRADE_CONTROLLER_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.labels['name']
+            - name: SYSTEM_UPGRADE_CONTROLLER_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.namespace
+          envFrom:
+            - configMapRef:
+                name: upgrade-conttroller
+          image: docker.io/rancher/system-upgrade-controller:v0.13.2
+          imagePullPolicy: IfNotPresent
+          name: upgrade-conttroller
+          ports: []
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 10m
+              memory: 64Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            runAsNonRoot: true
+          stdin: false
+          tty: false
+          volumeMounts:
+            - mountPath: /etc/ca-certificates
+              name: etc-ca-certificates
+              readOnly: true
+            - mountPath: /etc/pki
+              name: etc-pki
+              readOnly: true
+            - mountPath: /etc/ssl
+              name: etc-ssl
+              readOnly: true
+            - mountPath: /tmp
+              name: tmp
+      imagePullSecrets: []
+      initContainers: []
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+      serviceAccountName: upgrade-conttroller
+      terminationGracePeriodSeconds: 30
+      tolerations:
+        - key: CriticalAddonsOnly
+          operator: Exists
+        - effect: NoSchedule
+          key: node-role.kubernetes.io/master
+          operator: Exists
+        - effect: NoSchedule
+          key: node-role.kubernetes.io/controlplane
+          operator: Exists
+        - effect: NoSchedule
+          key: node-role.kubernetes.io/control-plane
+          operator: Exists
+        - effect: NoExecute
+          key: node-role.kubernetes.io/etcd
+          operator: Exists
+      volumes:
+        - hostpath:
+            path: /etc/ca-certificates
+            type: DirectoryOrCreate
+          name: etc-ca-certificates
+        - hostpath:
+            path: /etc/pki
+            type: DirectoryOrCreate
+          name: etc-pki
+        - hostpath:
+            path: /etc/ssl
+            type: DirectoryOrCreate
+          name: etc-ssl
+        - emptyDir: {}
+          name: tmp
