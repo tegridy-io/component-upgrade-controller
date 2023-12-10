@@ -1,0 +1,25 @@
+{
+  "template": "https://github.com/projectsyn/commodore-component-template.git",
+  "commit": "a47f4459dca78152eaf17e4897f1cbf0c8b67a3a",
+  "checkout": "main",
+  "context": {
+    "cookiecutter": {
+      "name": "System Upgrade Controller",
+      "slug": "upgrade-controller",
+      "parameter_key": "upgrade_controller",
+      "test_cases": "defaults",
+      "add_lib": "n",
+      "add_pp": "n",
+      "add_golden": "y",
+      "add_matrix": "y",
+      "add_go_unit": "n",
+      "copyright_holder": "VSHN AG <info@vshn.ch>",
+      "copyright_year": "2023",
+      "github_owner": "tegridy-io",
+      "github_name": "component-upgrade-controller",
+      "github_url": "https://github.com/tegridy-io/component-upgrade-controller",
+      "_template": "https://github.com/projectsyn/commodore-component-template.git"
+    }
+  },
+  "directory": null
+}

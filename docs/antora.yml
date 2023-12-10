@@ -1,0 +1,6 @@
+name: upgrade-controller
+title: System Upgrade Controller
+version: master
+start_page: ROOT:index.adoc
+nav:
+  - modules/ROOT/partials/nav.adoc

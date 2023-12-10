@@ -1,0 +1,4 @@
+parameters:
+  upgrade_controller:
+    =_metadata: {}
+    namespace: syn-upgrade-controller
