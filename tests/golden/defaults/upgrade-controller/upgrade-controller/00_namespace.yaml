@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations: {}
+  labels:
+    app.kubernetes.io/name: syn-upgrade-controller
+    name: syn-upgrade-controller
+    pod-security.kubernetes.io/enforce: privileged
+  name: syn-upgrade-controller

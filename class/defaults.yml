@@ -1,4 +1,30 @@
 parameters:
   upgrade_controller:
     =_metadata: {}
+
     namespace: syn-upgrade-controller
+
+    images:
+      upgrade_controller:
+        registry: docker.io
+        repository: rancher/system-upgrade-controller
+        tag: v0.13.2
+      kubectl:
+        registry: docker.io
+        repository: rancher/kubectl
+        tag: v1.28.4
+      k3s_upgrade:
+        registry: docker.io
+        repository: rancher/k3s-upgrade
+
+    replicaCount: 1
+
+    resources:
+      requests:
+        cpu: 10m
+        memory: 64Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+
+    release: ''
