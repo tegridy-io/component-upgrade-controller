@@ -17,21 +17,6 @@ spec:
           - disabled
           - 'false'
   serviceAccountName: upgrade-conttroller
-  tolerations:
-    - key: CriticalAddonsOnly
-      operator: Exists
-    - effect: NoSchedule
-      key: node-role.kubernetes.io/master
-      operator: Exists
-    - effect: NoSchedule
-      key: node-role.kubernetes.io/controlplane
-      operator: Exists
-    - effect: NoSchedule
-      key: node-role.kubernetes.io/control-plane
-      operator: Exists
-    - effect: NoExecute
-      key: node-role.kubernetes.io/etcd
-      operator: Exists
   upgrade:
     image: docker.io/rancher/rke2-upgrade
   version: v1.28.4+rke2r1
