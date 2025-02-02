@@ -1,6 +1,7 @@
 parameters:
   upgrade_controller:
-    =_metadata: {}
+    =_metadata:
+      multi_tenant: true
     =_dist_images:
       k3s: docker.io/rancher/k3s-upgrade
       rke2: docker.io/rancher/rke2-upgrade
@@ -15,7 +16,7 @@ parameters:
       kubectl:
         registry: docker.io
         repository: rancher/kubectl
-        tag: v1.30.3
+        tag: v1.32.1
 
     replicaCount: 1
 
