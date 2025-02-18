@@ -12,7 +12,7 @@ parameters:
       upgrade_controller:
         registry: docker.io
         repository: rancher/system-upgrade-controller
-        tag: v0.14.2
+        tag: v0.15.0
       kubectl:
         registry: docker.io
         repository: rancher/kubectl
