@@ -46,7 +46,7 @@ spec:
           envFrom:
             - configMapRef:
                 name: upgrade-conttroller
-          image: docker.io/rancher/system-upgrade-controller:v0.15.2
+          image: docker.io/rancher/system-upgrade-controller:v0.17.0
           imagePullPolicy: IfNotPresent
           name: upgrade-conttroller
           ports: []
