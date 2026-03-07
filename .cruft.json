@@ -1,6 +1,6 @@
 {
   "template": "https://github.com/projectsyn/commodore-component-template.git",
-  "commit": "98d16f99766e6c6d97322dbe42e058f0e2bf73d0",
+  "commit": "7e46facc758385bc32eeecab92b4639c66fd4e4f",
   "checkout": "main",
   "context": {
     "cookiecutter": {
@@ -24,7 +24,8 @@
       "github_owner": "tegridy-io",
       "github_name": "component-upgrade-controller",
       "github_url": "https://github.com/tegridy-io/component-upgrade-controller",
-      "_template": "https://github.com/projectsyn/commodore-component-template.git"
+      "_template": "https://github.com/projectsyn/commodore-component-template.git",
+      "_commit": "7e46facc758385bc32eeecab92b4639c66fd4e4f"
     }
   },
   "directory": null
